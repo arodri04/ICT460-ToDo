@@ -1,31 +1,17 @@
 from flask import Flask, render_template as rt, request, redirect, url_for, session
-from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta, date
+from database.database import db
+from database.models import *
 import hashlib
-from instance.Utils import *
+from database.Utils import *
 
 
 app = Flask(__name__)
 app.secret_key = "secret"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+db.init_app(app)
 
-
-
-class Todo(db.Model):
-    task_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    done = db.Column(db.Boolean)
-    created = db.Column(db.String)
-    dueDate = db.Column(db.String)
-    userId = db.Column(db.Integer, db.ForeignKey('users.userId'), nullable=False)
-    
-class Users(db.Model):
-    userId = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100))
-    password = db.Column(db.String(20))
-    salt = db.Column(db.String(10))
 
 
 @app.route('/')
