@@ -11,28 +11,81 @@
     <a href="{{ url_for('register')}}">Register</a>
     <a href="{{ url_for('logout')}}">logout</a>
         <h1>To Do List</h1>
+        <br><br>
+     <table>
+         <tbody>
+        {% if user %}
+        <h1>Hello {{ user }}</h1>
         <form  action="/add" method="post">
             <div >
-                <label class="thick">Enter the task</label>
+                <label>Enter the task: </label>
                 <input type="text" name="name">
+                <label>When is it due: </label>
+                <select name="dueDate">
+                    <option value=0>None</option>
+                    <option value=1>1 Day</option>
+                    <option value=2>2 Days</option>
+                    <option value=3>3 Days</option>
+                    <option value=4>4 Days</option>
+                    <option value=5>5 Days</option>
+                    <option value=6>6 Days</option>
+                    <option value=7>7 Days</option>
+                </select>
             <button class="button1" type="submit" >Add</button>
             </div>
         </form>
         <br><br>
-     <table>
-         <tbody>
-        {% if todo_list %}
-        <h1>Hello {{ user }}</h1>
-        {% for todo in todo_list %}
-        
+        {% endif %}
+        {% if lateTodos %}
+        <h1 style="color: red;">Late</h1>
+        {% for todo in lateTodos %}
+        <!--
+        todo[0] = id
+        todo[1] = name
+        todo[2] = completed
+        todo[3] = userId
+        todo[4] = created date
+        todo[5] = due date
+        -->
         <tr>
-            <td class="thick">{{ todo[0] }}</td>
+            <td class="thick">{{ todo[4] }}</td>
             <td class="thick">{{ todo[1] }}</td>
             {% if todo[2] == False %}
             <td><label class="label pending">Not done</label></td>
             {% else %}
             <td><label class="label done">Done</label></td>
             {% endif %}
+            <td><label>Due Date: {{ todo[5] }}</label></td>
+            <td><a  href="/update/{{ todo[0] }}" class="button2">Update</a></td>
+            <td><a  href="/delete/{{ todo[0] }}" class="button3">Delete</a></td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </tbody>
+    </table>
+<table>
+    <tbody>
+        <br><br>
+        {% if todo_list %}
+        <h1>All Todos</h1>
+        {% for todo in todo_list %}
+        <!--
+        todo[0] = id
+        todo[1] = name
+        todo[2] = completed
+        todo[3] = userId
+        todo[4] = created date
+        todo[5] = due date
+        -->
+        <tr>
+            <td class="thick">{{ todo[4] }}</td>
+            <td class="thick">{{ todo[1] }}</td>
+            {% if todo[2] == False %}
+            <td><label class="label pending">Not done</label></td>
+            {% else %}
+            <td><label class="label done">Done</label></td>
+            {% endif %}
+            <td><label>Due Date: {{ todo[5] }}</label></td>
             <td><a  href="/update/{{ todo[0] }}" class="button2">Update</a></td>
             <td><a  href="/delete/{{ todo[0] }}" class="button3">Delete</a></td>
         </tr>

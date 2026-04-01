@@ -10,6 +10,8 @@ cursor.execute('''
         name VARCHAR(100) NOT NULL,
         done BOOLEAN NOT NULL DEFAULT 0,
         userId INTEGER NOT NULL,
+        created VARCHAR(10),
+        dueDate VARCHAR(10),
         FOREIGN KEY(userId) REFERENCES users(userId) ON DELETE CASCADE
     )
 ''')
